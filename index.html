@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tushar — Video Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e10;
+    --surface: #17171a;
+    --border: #26262b;
+    --text: #f2f2f3;
+    --muted: #9a9aa3;
+    --accent: #ff5a36;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 56px 24px 72px; }
+
+  header { margin-bottom: 56px; }
+  .name { font-size: 15px; font-weight: 600; letter-spacing: .02em; color: var(--muted); }
+  .name span { color: var(--accent); }
+
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+  }
+  h1 { font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -.02em; margin-bottom: 28px; }
+  h2 { font-size: clamp(22px, 3vw, 28px); font-weight: 700; letter-spacing: -.01em; }
+
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .video { position: relative; aspect-ratio: 16 / 9; background: #000; }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .meta {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px; font-size: 14px;
+  }
+  .meta .num { color: var(--muted); font-weight: 500; }
+  .meta a { color: var(--text); text-decoration: none; font-weight: 500; opacity: .8; }
+  .meta a:hover { opacity: 1; color: var(--accent); }
+
+  section.featured { margin-bottom: 64px; }
+
+  details.more {
+    border-top: 1px solid var(--border);
+    padding-top: 40px;
+  }
+  details.more summary {
+    list-style: none; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 22px 24px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    transition: border-color .2s;
+  }
+  details.more summary::-webkit-details-marker { display: none; }
+  details.more summary:hover { border-color: #3a3a41; }
+  .summary-sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
+  .chev {
+    flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid var(--border); display: grid; place-items: center;
+    transition: transform .25s;
+  }
+  details[open] .chev { transform: rotate(180deg); }
+  details.more .grid { margin-top: 24px; }
+
+  footer {
+    margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 13px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="name">Tushar <span>·</span> Video Production</div>
+  </header>
+
+  <section class="featured">
+    <div class="eyebrow">Videos</div>
+    <h1>Two Videos I've Produced</h1>
+    <div class="grid" id="featured"></div>
+  </section>
+
+  <details class="more" id="more">
+    <summary>
+      <div>
+        <h2>Other Videos I've Produced</h2>
+        <div class="summary-sub">8 more projects. Click to expand.</div>
+      </div>
+      <div class="chev" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+    </summary>
+    <div class="grid" id="others"></div>
+  </details>
+
+  <footer>Thank you for taking the time to watch.</footer>
+
+</div>
+
+<script>
+  const featured = ["5J7rpVS8ZPA", "_lsoYo34Xwg"];
+  const others = [
+    "N4XtgQRvhEA", "eRN2kFd64hI", "wlcRyi8rnh4", "62qjIZ4DO2w",
+    "yNN8CXmJlDg", "0wGPpOptx90", "q8E8gJYqwkU", "48Tu4lMxePA"
+  ];
+
+  function card(id, label, lazy) {
+    const src = "https://www.youtube-nocookie.com/embed/" + id + "?rel=0";
+    return `
+      <div class="card">
+        <div class="video">
+          <iframe ${lazy ? 'data-src' : 'src'}="${src}" title="${label}" loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="meta">
+          <span class="num">${label}</span>
+          <a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+        </div>
+      </div>`;
+  }
+
+  const pad = n => String(n).padStart(2, "0");
+  document.getElementById("featured").innerHTML =
+    featured.map((id, i) => card(id, "Video " + pad(i + 1), false)).join("");
+  document.getElementById("others").innerHTML =
+    others.map((id, i) => card(id, "Video " + pad(i + 3), true)).join("");
+
+  // Load the other videos only when the section is opened, so the page stays fast.
+  document.getElementById("more").addEventListener("toggle", e => {
+    if (!e.target.open) return;
+    e.target.querySelectorAll("iframe[data-src]").forEach(f => {
+      f.src = f.dataset.src; f.removeAttribute("data-src");
+    });
+  });
+</script>
+</body>
+</html>
